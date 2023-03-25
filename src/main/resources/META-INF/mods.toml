@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "[43,)"
+license = "MIT"
+
+[[mods]]
+modId = "clientbuilderswandtwo"
+version = "${version}"
+
+displayName = "Client Builder's Wand 2.0"
+# displayURL="https://changeme.dev/"
+# logoFile="icon.png"
+# authors="Me!"
+description = '''
+implements a "builer's wand" function entirely client-side
+'''
+
+[[dependencies.clientbuilderswandtwo]]
+modId = "forge"
+mandatory = true
+versionRange = "[43,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.clientbuilderswandtwo]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.2,)"
+ordering = "NONE"
+side = "CLIENT"
