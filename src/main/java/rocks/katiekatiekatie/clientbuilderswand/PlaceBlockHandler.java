@@ -21,7 +21,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
-import rocks.katiekatiekatie.clientbuilderswand.SettingsMenu.SettingsScreen;
+import rocks.katiekatiekatie.clientbuilderswand.SettingsMenu.ModConfig;
 
 import java.util.ArrayList;
 
@@ -39,25 +39,27 @@ public class PlaceBlockHandler {
     public PlaceBlockHandler() {
     }
 
+    // TODO: don't put this in here
+    //       (will likely be moved to loader-specific subproject w/ Architectury transition anyway)
     @SubscribeEvent(
             priority = EventPriority.NORMAL,
             receiveCanceled = true
     )
     public void onEvent(InputEvent.Key event) {
-        MutableText off = MutableText.of(new TranslatableTextContent("clientbuilderswand.false"));
-        off.setStyle(Style.EMPTY.withFormatting(Formatting.DARK_RED));
-
-        MutableText on = MutableText.of(new TranslatableTextContent("clientbuilderswand.true"));
+        MutableText on = MutableText.of(new TranslatableTextContent("clientbuilderswand.on"));
         on.setStyle(Style.EMPTY.withFormatting(Formatting.DARK_GREEN));
+
+        MutableText off = MutableText.of(new TranslatableTextContent("clientbuilderswand.off"));
+        off.setStyle(Style.EMPTY.withFormatting(Formatting.DARK_RED));
 
         this.player = this.client.player;
 
         if (event.getKey() != GLFW.GLFW_KEY_ESCAPE) {
-            if (ClientProxy.openMenu.isPressed()) {
-                this.client.setScreen(new SettingsScreen(ClientProxy.miningOptions));
+            if (ClientBuildersWand.openMenu.isPressed()) {
+                this.client.setScreen(ClientBuildersWand.configScreen);
             }
 
-            if (ClientProxy.toggleWand.isPressed()) {
+            if (ClientBuildersWand.toggleWand.isPressed()) {
                 this.keyPressed = !this.keyPressed;
                 this.player.sendMessage(MutableText.of(new TranslatableTextContent("clientbuilderswand.wand")).append(this.keyPressed ? on : off), true);
             }
@@ -87,23 +89,22 @@ public class PlaceBlockHandler {
                 }
             }
 
-            BlockPos blockPos = event.getPos();
             Vec3d pos = event.getHitVec().getPos();
 
+            BlockPos blockPos = event.getPos();
             BlockState blockState = this.client.world.getBlockState(blockPos);
-            Block block = blockState.getBlock();
-
             BlockHitResult blockHitResult = new BlockHitResult(pos, placeDir, blockPos, false);
 
-            ActionResult interactionResult = block.onUse(
-                    this.client.world.getBlockState(blockPos),
+            ActionResult interactionResult = blockState.onUse(
                     this.client.world,
-                    blockPos,
                     this.player,
                     Hand.MAIN_HAND,
                     blockHitResult
             );
 
+            Block block = blockState.getBlock();
+
+            // TODO: rename this field to something that makes sense!!
             boolean flag = !(block instanceof BlockWithEntity)
                         && !(block instanceof DoorBlock)
                         && interactionResult == ActionResult.PASS;
@@ -116,7 +117,7 @@ public class PlaceBlockHandler {
             }
 
             if (flag) {
-                int range = (int)Math.round(ClientProxy.miningOptions.getBuildingRange());
+                int range = ModConfig.buildingRange;
 
                 for(int lauf1 = -range; lauf1 <= range; ++lauf1) {
                     for(int lauf2 = -range; lauf2 <= range; ++lauf2) {
@@ -140,7 +141,7 @@ public class PlaceBlockHandler {
                                     placeBlock.getMaterial() == Material.REPLACEABLE_PLANT
                                     || placeBlock.getMaterial() == Material.NETHER_SHOOTS
                                 )
-                                && ClientProxy.miningOptions.isIgnorePlants()
+                                && ModConfig.ignorePlants
                                 ) {
                                     flag = true;
                                 } else if (
@@ -149,7 +150,7 @@ public class PlaceBlockHandler {
                                     || placeBlock.getMaterial() == Material.BUBBLE_COLUMN
                                     || placeBlock.getMaterial() == Material.LAVA
                                 )
-                                && ClientProxy.miningOptions.isIgnoreFluid()
+                                && ModConfig.ignoreFluid
                                 ) {
                                     flag = true;
                                 }
@@ -159,11 +160,11 @@ public class PlaceBlockHandler {
 
                             BlockState compareBlock = this.client.world.getBlockState(placePos.add(placeDir.getOpposite().getVector()));
 
-                            if (compareBlock.getBlock() != block && !ClientProxy.miningOptions.isfuzzy()) {
+                            if (compareBlock.getBlock() != block && !ModConfig.fuzzyMode) {
                                 flag = false;
                             }
 
-                            if (compareBlock.getMaterial().isReplaceable() && !ClientProxy.miningOptions.isplaceInAir()) {
+                            if (compareBlock.getMaterial().isReplaceable() && !ModConfig.placeinAir) {
                                 flag = false;
                             }
 
@@ -187,9 +188,9 @@ public class PlaceBlockHandler {
         } else {
             int counter = 0;
 
-            Double max = ClientProxy.miningOptions.getBlocksPerTick();
+            int max = ModConfig.blocksPerTick;
 
-            while(!this.targetPos.isEmpty() && (double)counter < max) {
+            while(!this.targetPos.isEmpty() && counter < max) {
                 this.wait = 1;
                 ++counter;
 

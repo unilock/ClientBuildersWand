@@ -9,11 +9,11 @@ version = "${version}"
 displayName = "Client Builder's Wand"
 # displayURL="https://changeme.dev/"
 # logoFile="icon.png"
-authors="waechter_von_atlantis"
+authors="kate, waechter_von_atlantis"
 description = '''
 Client-side mod to allow building as if you had a "Builder's Wand" from [insert mod here]
 
-Decompilation of "Client Builders Wand" by waechter_von_atlantis (licensed under the MIT License)
+Derivative of "Client Builders Wand" by waechter_von_atlantis (licensed under the MIT License)
 https://www.curseforge.com/minecraft/mc-mods/client-builders-wand
 '''
 

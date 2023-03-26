@@ -1,0 +1,21 @@
+{
+	"clientbuilderswand.wand": "Wand: ",
+	"clientbuilderswand.on": "on",
+	"clientbuilderswand.off": "off",
+	"clientbuilderswand.midnightconfig.title": "Client Builder's Wand Settings",
+	"clientbuilderswand.midnightconfig.buildingRangeComment": "Range (in blocks) centered on player in which blocks can be placed",
+	"clientbuilderswand.midnightconfig.buildingRange": "Placement range",
+	"clientbuilderswand.midnightconfig.blocksPerTickComment": "Max number of blocks that can be placed per tick",
+	"clientbuilderswand.midnightconfig.blocksPerTick": "Blocks per tick",
+	"clientbuilderswand.midnightconfig.fuzzyModeComment": "Allow building off of any kind of block, instead of only that of the block that you right-clicked",
+	"clientbuilderswand.midnightconfig.fuzzyMode": "Fuzzy mode",
+	"clientbuilderswand.midnightconfig.ignoreFluidComment": "Allow replacing fluids when building (water and lava)",
+	"clientbuilderswand.midnightconfig.ignoreFluid": "Replace fluid",
+	"clientbuilderswand.midnightconfig.ignorePlantsComment": "Allow replacing plants when building (grass, Nether roots, etc.)",
+	"clientbuilderswand.midnightconfig.ignorePlants": "Replace plants",
+	"clientbuilderswand.midnightconfig.placeinAirComment": "Allow building mid-air (servers may not like this!)",
+	"clientbuilderswand.midnightconfig.placeinAir": "Place in air",
+	"key.clientbuilderswand.category": "Client Builder's Wand",
+	"key.clientbuilderswand.toggleWand": "Toggle Wand",
+	"key.clientbuilderswand.settings": "Settings"
+}

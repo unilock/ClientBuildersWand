@@ -2,19 +2,14 @@ Client-side mod to allow building as if you had a "Builder's Wand" from [insert 
 
 ***
 
-Decompilation of "Client Builders Wand" by waechter_von_atlantis (licensed under the MIT License)
+Rewrite of "Client Builders Wand" by waechter_von_atlantis (licensed under the MIT License)
 
 https://www.curseforge.com/minecraft/mc-mods/client-builders-wand
 
 ***
 
 TODO:
-- Bugs
-  - Disabling the "Replace plants" setting in-game doesn't reflect the change in the settings menu until it's closed + re-opened (???)  
-    (bug existed in original version)
-
 - Updates
-  - Refactor config implementation (Cloth Config?)
   - Port to Architectury (including Fabric and Quilt)
   - Port to >1.19.2
 
