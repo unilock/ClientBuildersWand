@@ -12,10 +12,6 @@ group = project.maven_group
 
 loom {
     forge {
-        mixinConfigs = [
-                "clientbuilderswandtwo.mixins.json"
-        ]
-
         dataGen {
             mod project.mod_id
         }

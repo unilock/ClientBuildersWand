@@ -3,25 +3,28 @@ loaderVersion = "[43,)"
 license = "MIT"
 
 [[mods]]
-modId = "clientbuilderswandtwo"
+modId = "clientbuilderswand"
 version = "${version}"
 
-displayName = "Client Builder's Wand 2.0"
+displayName = "Client Builder's Wand"
 # displayURL="https://changeme.dev/"
 # logoFile="icon.png"
-# authors="Me!"
+authors="waechter_von_atlantis"
 description = '''
-implements a "builer's wand" function entirely client-side
+Client-side mod to allow building as if you had a "Builder's Wand" from [insert mod here]
+
+Decompilation of "Client Builders Wand" by waechter_von_atlantis (licensed under the MIT License)
+https://www.curseforge.com/minecraft/mc-mods/client-builders-wand
 '''
 
-[[dependencies.clientbuilderswandtwo]]
+[[dependencies.clientbuilderswand]]
 modId = "forge"
 mandatory = true
 versionRange = "[43,)"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.clientbuilderswandtwo]]
+[[dependencies.clientbuilderswand]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.19.2,)"
