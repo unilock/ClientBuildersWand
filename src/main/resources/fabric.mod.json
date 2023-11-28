@@ -3,7 +3,7 @@
 	"id": "clientbuilderswand",
 	"version": "${version}",
 	"name": "Client Builder's Wand",
-	"description": "EXAMPLE",
+	"description": "Client-side mod to allow building as if you had a \"Builder's Wand\" from [insert mod here]",
 	"authors": [
 		"unilock"
 	],
