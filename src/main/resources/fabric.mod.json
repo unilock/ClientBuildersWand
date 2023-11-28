@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "clientbuilderswand",
+	"version": "${version}",
+	"name": "Client Builder's Wand",
+	"description": "EXAMPLE",
+	"authors": [
+		"unilock"
+	],
+	"contact": {
+		"sources": "https://github.com/unilock/ClientBuildersWand"
+	},
+	"license": "LGPL-3.0-only",
+	"icon": "assets/clientbuilderswand/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+          "cc.unilock.clientbuilderswand.ClientBuildersWand"
+		]
+	},
+	"mixins": [
+		"clientbuilderswand.mixins.json"
+	],
+	"depends": {
+		"fabricloader": "*",
+		"minecraft": ">=1.20.2",
+		"fabric-api": "*"
+	}
+}

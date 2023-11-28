@@ -1,0 +1,8 @@
+{
+  "key.clientbuilderswand.category": "Client Builder's Wand",
+  "key.clientbuilderswand.toggle": "Toggle Builder's Wand",
+
+  "clientbuilderswand.toggle": "Wand: %s",
+  "clientbuilderswand.on": "ON",
+  "clientbuilderswand.off": "OFF"
+}
