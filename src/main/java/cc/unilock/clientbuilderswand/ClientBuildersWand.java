@@ -5,10 +5,12 @@ import cc.unilock.clientbuilderswand.mixin.ClientPlayerInteractionManagerMixin;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -36,6 +38,57 @@ public class ClientBuildersWand implements ClientModInitializer {
 				enabled = !enabled;
 				MinecraftClient.getInstance().player.sendMessage(Text.translatable("clientbuilderswand.toggle", enabled ? Text.translatable("clientbuilderswand.on").formatted(Formatting.GREEN) : Text.translatable("clientbuilderswand.off").formatted(Formatting.RED)), true);
 			}
+		});
+
+		AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+			if (enabled && ClientBuildersWandConfig.INSTANCE.destruction.value() && world.isClient()) {
+				Vec3i vecX;
+				Vec3i vecZ;
+
+				if (Direction.UP.equals(direction) || Direction.DOWN.equals(direction)) {
+					vecX = new Vec3i(1, 0, 0);
+					vecZ = new Vec3i(0, 0, 1);
+				} else if (Direction.NORTH.equals(direction) || Direction.SOUTH.equals(direction)) {
+					vecX = new Vec3i(0, 1, 0);
+					vecZ = new Vec3i(1, 0, 0);
+				} else if (Direction.EAST.equals(direction) || Direction.WEST.equals(direction)) {
+					vecX = new Vec3i(0, 1, 0);
+					vecZ = new Vec3i(0, 0, 1);
+				} else {
+					LOGGER.error("This should never happen!!");
+					return ActionResult.PASS;
+				}
+
+				final int range = ClientBuildersWandConfig.INSTANCE.range.value();
+
+				for (int x = -range; x <= range; x++) {
+					for (int z = -range; z <= range; z++) {
+						final Vec3i vecX2 = vecX.multiply(x);
+						final Vec3i vecZ2 = vecZ.multiply(z);
+
+						final BlockPos pos2 = pos.add(vecX2).add(vecZ2);
+
+						if (world.getBlockState(pos2).isAir()) {
+							continue;
+						}
+
+						if (MinecraftClient.getInstance().player.isCreative() || MinecraftClient.getInstance().player.getMainHandStack().getMiningSpeedMultiplier(world.getBlockState(pos2)) > 1.0F) {
+							MinecraftClient.getInstance().interactionManager.breakBlock(pos2);
+							((ClientPlayerInteractionManagerMixin) MinecraftClient.getInstance().interactionManager).callSendSequencedPacket(
+								MinecraftClient.getInstance().world,
+								sequence ->new PlayerActionC2SPacket(
+									PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
+									pos2,
+									direction,
+									sequence
+								)
+							);
+						}
+					}
+				}
+			}
+
+			return ActionResult.PASS;
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
