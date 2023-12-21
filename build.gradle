@@ -11,11 +11,15 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	maven {
+		name = 'Quilt'
+		url = 'https://maven.quiltmc.org/repository/release'
+	}
+	mavenCentral()
+	maven {
+		name = 'JitPack'
+		url = 'https://jitpack.io'
+	}
 }
 
 loom {
@@ -32,6 +36,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "com.github.unilock:fabricated-quilt-config:${project.fabricated_quilt_config_version}"
 }
 
 processResources {

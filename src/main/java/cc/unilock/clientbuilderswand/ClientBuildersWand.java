@@ -1,5 +1,6 @@
 package cc.unilock.clientbuilderswand;
 
+import cc.unilock.clientbuilderswand.config.ClientBuildersWandConfig;
 import cc.unilock.clientbuilderswand.mixin.ClientPlayerInteractionManagerMixin;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -38,19 +39,19 @@ public class ClientBuildersWand implements ClientModInitializer {
 		});
 
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-			if (enabled && world.isClient()) {
+			if (enabled && ClientBuildersWandConfig.INSTANCE.construction.value() && world.isClient()) {
 				BlockPos pos = hitResult.getBlockPos();
-				Direction side = hitResult.getSide();
+				Direction direction = hitResult.getSide();
 				Vec3i vecX;
 				Vec3i vecZ;
 
-				if (Direction.UP.equals(side) || Direction.DOWN.equals(side)) {
+				if (Direction.UP.equals(direction) || Direction.DOWN.equals(direction)) {
 					vecX = new Vec3i(1, 0, 0);
 					vecZ = new Vec3i(0, 0, 1);
-				} else if (Direction.NORTH.equals(side) || Direction.SOUTH.equals(side)) {
+				} else if (Direction.NORTH.equals(direction) || Direction.SOUTH.equals(direction)) {
 					vecX = new Vec3i(0, 1, 0);
 					vecZ = new Vec3i(1, 0, 0);
-				} else if (Direction.EAST.equals(side) || Direction.WEST.equals(side)) {
+				} else if (Direction.EAST.equals(direction) || Direction.WEST.equals(direction)) {
 					vecX = new Vec3i(0, 1, 0);
 					vecZ = new Vec3i(0, 0, 1);
 				} else {
@@ -58,8 +59,10 @@ public class ClientBuildersWand implements ClientModInitializer {
 					return ActionResult.PASS;
 				}
 
-				for (int x = -1; x < 2; x++) {
-					for (int z = -1; z < 2; z++) {
+				final int range = ClientBuildersWandConfig.INSTANCE.range.value();
+
+				for (int x = -range; x <= range; x++) {
+					for (int z = -range; z <= range; z++) {
 						final Vec3i vecX2 = vecX.multiply(x);
 						final Vec3i vecZ2 = vecZ.multiply(z);
 
@@ -79,7 +82,7 @@ public class ClientBuildersWand implements ClientModInitializer {
 										pos2.getY(),
 										pos2.getZ()
 									),
-									side,
+									direction,
 									pos2,
 									world.getBlockState(pos2).isReplaceable()
 								),
