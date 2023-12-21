@@ -31,7 +31,7 @@ public class ClientBuildersWand implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientTickEvents.START_WORLD_TICK.register(world -> {
-			if (keybind.isPressed()) {
+			if (keybind.wasPressed()) {
 				enabled = !enabled;
 				MinecraftClient.getInstance().player.sendMessage(Text.translatable("clientbuilderswand.toggle", enabled ? Text.translatable("clientbuilderswand.on").formatted(Formatting.GREEN) : Text.translatable("clientbuilderswand.off").formatted(Formatting.RED)), true);
 			}
